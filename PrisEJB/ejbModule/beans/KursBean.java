@@ -54,7 +54,7 @@ public class KursBean implements KursBeanRemote, KursBeanLocal {
     }
     
     public User subscribeUser(User u, Kurs k){
-    	u.getKurs4().add(k);
+    	u.getKurs2().add(k);
     	
     	try{
     		u = em.merge(u);

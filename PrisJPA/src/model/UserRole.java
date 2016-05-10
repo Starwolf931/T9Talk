@@ -21,7 +21,7 @@ public class UserRole implements Serializable {
 	private String opis;
 
 	//bi-directional many-to-one association to User
-	@OneToMany(mappedBy="userrole")
+	@OneToMany(mappedBy="userrole", fetch=FetchType.EAGER)
 	private List<User> users;
 
 	public UserRole() {

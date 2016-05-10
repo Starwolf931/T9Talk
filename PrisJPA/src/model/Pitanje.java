@@ -24,13 +24,17 @@ public class Pitanje implements Serializable {
 	private int tipodgovora;
 
 	//bi-directional many-to-one association to Odgovor
-	@OneToMany(mappedBy="pitanje")
+	@OneToMany(mappedBy="pitanje", fetch=FetchType.EAGER)
 	private List<Odgovor> odgovors;
 
 	//bi-directional many-to-one association to Test
 	@ManyToOne
 	@JoinColumn(name="TESTID")
 	private Test test;
+
+	//bi-directional many-to-one association to Uradjenopitanje
+	@OneToMany(mappedBy="pitanje", fetch=FetchType.EAGER)
+	private List<Uradjenopitanje> uradjenopitanjes;
 
 	public Pitanje() {
 	}
@@ -87,6 +91,28 @@ public class Pitanje implements Serializable {
 
 	public void setTest(Test test) {
 		this.test = test;
+	}
+
+	public List<Uradjenopitanje> getUradjenopitanjes() {
+		return this.uradjenopitanjes;
+	}
+
+	public void setUradjenopitanjes(List<Uradjenopitanje> uradjenopitanjes) {
+		this.uradjenopitanjes = uradjenopitanjes;
+	}
+
+	public Uradjenopitanje addUradjenopitanje(Uradjenopitanje uradjenopitanje) {
+		getUradjenopitanjes().add(uradjenopitanje);
+		uradjenopitanje.setPitanje(this);
+
+		return uradjenopitanje;
+	}
+
+	public Uradjenopitanje removeUradjenopitanje(Uradjenopitanje uradjenopitanje) {
+		getUradjenopitanjes().remove(uradjenopitanje);
+		uradjenopitanje.setPitanje(null);
+
+		return uradjenopitanje;
 	}
 
 }

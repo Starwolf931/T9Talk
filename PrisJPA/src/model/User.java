@@ -27,59 +27,37 @@ public class User implements Serializable {
 	private String username;
 
 	//bi-directional many-to-one association to Komentar
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private List<Komentar> komentars;
 
 	//bi-directional many-to-many association to Kurs
-	@ManyToMany(mappedBy="users1")
+	@ManyToMany(mappedBy="users1", fetch=FetchType.EAGER)
 	private List<Kurs> kurs1;
 
 	//bi-directional many-to-many association to Kurs
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="users2")
+	@ManyToMany(mappedBy="users2", fetch=FetchType.EAGER)
 	private List<Kurs> kurs2;
 
 	//bi-directional many-to-one association to Lekcija
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private List<Lekcija> lekcijas;
 
+	//bi-directional many-to-one association to Ocena
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+	private List<Ocena> ocenas;
+
 	//bi-directional many-to-one association to Polaze
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
 	private List<Polaze> polazes;
 
-	//bi-directional many-to-many association to Kurs
-	@ManyToMany
-	@JoinTable(
-		name="predaje"
-		, joinColumns={
-			@JoinColumn(name="USERID")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="KURSID")
-			}
-		)
-	private List<Kurs> kurs3;
-
-	//bi-directional many-to-many association to Kurs
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(
-		name="prijavljen"
-		, joinColumns={
-			@JoinColumn(name="USERID")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="KURSID")
-			}
-		)
-	private List<Kurs> kurs4;
+	//bi-directional many-to-one association to Uradjentest
+	@OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+	private List<Uradjentest> uradjentests;
 
 	//bi-directional many-to-one association to UserRole
 	@ManyToOne
 	@JoinColumn(name="ROLEID")
 	private UserRole userrole;
-
-	//bi-directional many-to-one association to Ocena
-	@OneToMany(mappedBy="user")
-	private List<Ocena> ocenas;
 
 	public User() {
 	}
@@ -184,6 +162,28 @@ public class User implements Serializable {
 		return lekcija;
 	}
 
+	public List<Ocena> getOcenas() {
+		return this.ocenas;
+	}
+
+	public void setOcenas(List<Ocena> ocenas) {
+		this.ocenas = ocenas;
+	}
+
+	public Ocena addOcena(Ocena ocena) {
+		getOcenas().add(ocena);
+		ocena.setUser(this);
+
+		return ocena;
+	}
+
+	public Ocena removeOcena(Ocena ocena) {
+		getOcenas().remove(ocena);
+		ocena.setUser(null);
+
+		return ocena;
+	}
+
 	public List<Polaze> getPolazes() {
 		return this.polazes;
 	}
@@ -206,20 +206,26 @@ public class User implements Serializable {
 		return polaze;
 	}
 
-	public List<Kurs> getKurs3() {
-		return this.kurs3;
+	public List<Uradjentest> getUradjentests() {
+		return this.uradjentests;
 	}
 
-	public void setKurs3(List<Kurs> kurs3) {
-		this.kurs3 = kurs3;
+	public void setUradjentests(List<Uradjentest> uradjentests) {
+		this.uradjentests = uradjentests;
 	}
 
-	public List<Kurs> getKurs4() {
-		return this.kurs4;
+	public Uradjentest addUradjentest(Uradjentest uradjentest) {
+		getUradjentests().add(uradjentest);
+		uradjentest.setUser(this);
+
+		return uradjentest;
 	}
 
-	public void setKurs4(List<Kurs> kurs4) {
-		this.kurs4 = kurs4;
+	public Uradjentest removeUradjentest(Uradjentest uradjentest) {
+		getUradjentests().remove(uradjentest);
+		uradjentest.setUser(null);
+
+		return uradjentest;
 	}
 
 	public UserRole getUserrole() {
@@ -228,28 +234,6 @@ public class User implements Serializable {
 
 	public void setUserrole(UserRole userrole) {
 		this.userrole = userrole;
-	}
-
-	public List<Ocena> getOcenas() {
-		return this.ocenas;
-	}
-
-	public void setOcenas(List<Ocena> ocenas) {
-		this.ocenas = ocenas;
-	}
-
-	public Ocena addOcena(Ocena ocena) {
-		getOcenas().add(ocena);
-		ocena.setUser(this);
-
-		return ocena;
-	}
-
-	public Ocena removeOcena(Ocena ocena) {
-		getOcenas().remove(ocena);
-		ocena.setUser(null);
-
-		return ocena;
 	}
 
 }

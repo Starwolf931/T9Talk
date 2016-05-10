@@ -23,17 +23,21 @@ public class Test implements Serializable {
 	private String opis;
 
 	//bi-directional many-to-one association to Pitanje
-	@OneToMany(mappedBy="test")
+	@OneToMany(mappedBy="test", fetch=FetchType.EAGER)
 	private List<Pitanje> pitanjes;
 
 	//bi-directional many-to-one association to Polaze
-	@OneToMany(mappedBy="test")
+	@OneToMany(mappedBy="test", fetch=FetchType.EAGER)
 	private List<Polaze> polazes;
 
-	//bi-directional many-to-one association to Lekcija
+	//bi-directional many-to-one association to Kurs
 	@ManyToOne
-	@JoinColumn(name="LEKCIJAID")
-	private Lekcija lekcija;
+	@JoinColumn(name="KURSID")
+	private Kurs kur;
+
+	//bi-directional many-to-one association to Uradjentest
+	@OneToMany(mappedBy="test", fetch=FetchType.EAGER)
+	private List<Uradjentest> uradjentests;
 
 	public Test() {
 	}
@@ -106,12 +110,34 @@ public class Test implements Serializable {
 		return polaze;
 	}
 
-	public Lekcija getLekcija() {
-		return this.lekcija;
+	public Kurs getKur() {
+		return this.kur;
 	}
 
-	public void setLekcija(Lekcija lekcija) {
-		this.lekcija = lekcija;
+	public void setKur(Kurs kur) {
+		this.kur = kur;
+	}
+
+	public List<Uradjentest> getUradjentests() {
+		return this.uradjentests;
+	}
+
+	public void setUradjentests(List<Uradjentest> uradjentests) {
+		this.uradjentests = uradjentests;
+	}
+
+	public Uradjentest addUradjentest(Uradjentest uradjentest) {
+		getUradjentests().add(uradjentest);
+		uradjentest.setTest(this);
+
+		return uradjentest;
+	}
+
+	public Uradjentest removeUradjentest(Uradjentest uradjentest) {
+		getUradjentests().remove(uradjentest);
+		uradjentest.setTest(null);
+
+		return uradjentest;
 	}
 
 }

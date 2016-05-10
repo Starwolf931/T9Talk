@@ -14,12 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import beans.KursBeanLocal;
 import beans.LekcijaBeanLocal;
+import beans.TestBeanLocal;
 import beans.UserBeanLocal;
 import beans.UserBeanRemote;
 import model.Komentar;
 import model.Kurs;
 import model.Lekcija;
 import model.Ocena;
+import model.Test;
 import model.User;
 
 /**
@@ -42,6 +44,9 @@ public class KursServlet extends HttpServlet {
     
     @EJB
     LekcijaBeanLocal lekcijaBean;
+    
+    @EJB
+    TestBeanLocal testBean;
     
 	/** 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -161,6 +166,7 @@ public class KursServlet extends HttpServlet {
 			
 			List<Komentar> komentari = kursBean.getKomentari(kurs);
 			List<Lekcija> lekcije = lekcijaBean.getLekcije(kurs);
+			List<Test> testovi = testBean.getTestovi(kurs);
 			
 			String starDis = new String("");
 			String disSub = new String("");
@@ -175,7 +181,7 @@ public class KursServlet extends HttpServlet {
 			if (logged){
 				if (userBean.isPolaznik()){
 					User myUser = userBean.getMyUser();
-					for (Kurs k : myUser.getKurs4()){
+					for (Kurs k : myUser.getKurs2()){
 						if (k.getKursid() == kurs.getKursid()){
 							disabledSub = true;
 							starEnabled = true;
@@ -234,6 +240,7 @@ public class KursServlet extends HttpServlet {
 			request.setAttribute("disSub", disSub);
 			request.setAttribute("starDis", starDis);
 			request.setAttribute("disLekcija", disLekcija);
+			request.setAttribute("testovi", testovi);
 			
 			rd = getServletContext().getRequestDispatcher("/kurs.jsp");
 		}

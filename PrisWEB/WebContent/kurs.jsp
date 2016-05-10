@@ -1,4 +1,5 @@
 <%@page import="model.Lekcija"%>
+<%@page import="model.Test"%>
 <%@page import="model.Komentar"%>
 <%@page import="model.Ocena"%>
 <%@page import="java.util.List"%>
@@ -121,6 +122,7 @@
 				<h4>Ocekivani ishod</h4>
 				<p>${kurs.ishod}</p><br>
 				
+				
 				<h2>Lekcije &nbsp;&nbsp;
 				<%
 				if (logged){
@@ -169,6 +171,69 @@
 									if (user.isPredavac()){
 										%>
 										<td><input type="submit" class="btn btn-warning" value="Izmeni" name="<%=lekcija.getLekcijaid() %>"></td>
+										<%
+									}
+								}
+								%>
+							</tr>
+								<%
+							}
+							}
+							%>
+						</tbody>
+					</table>
+				</form>
+				
+				<h2>Testovi &nbsp;&nbsp;
+				<%
+				if (logged){
+					if (user.isPredavac()){
+						%>
+						<a class="btn btn-success" href="add-test.jsp">Dodaj Test</a> <br>
+						<%
+					}
+				}
+				%>
+				</h2>
+				<form action="/PrisWEB/TestServlet" method="post">
+					<table class="table table-hover table-bordered">
+						<thead>
+							<tr>
+								<th>Naziv</th>
+								<th>Polazi</th>
+								<th>Bodovi</th>
+								<% 
+								if (user != null){
+									if (user.isPredavac()){
+									%>							
+										<th>Izmeni</th>
+									<%
+									}
+								}
+								%>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							if(request.getAttribute("testovi") != null){
+								for (Test test : (List<Test>)request.getAttribute("testovi")){
+							%>
+							<tr>
+								<td><%=test.getNaslov() %></td>
+								<%
+								if (user != null){
+									if (user.isPredavac()){
+										disLekcija = "";
+									}
+								}
+								%>
+								<td><input type="submit" <%=disLekcija %> class="btn btn-info" value="Pokreni" name="<%=test.getTestid() %>"></td>
+								<td></td>
+								<%
+								if (user != null){
+									if (user.isPredavac()){
+										%>
+										<td><input type="submit" class="btn btn-warning" value="Izmeni" name="<%=test.getTestid() %>"></td>
 										<%
 									}
 								}

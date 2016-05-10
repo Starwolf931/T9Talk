@@ -1,9 +1,8 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
-
 import javax.persistence.*;
+import java.util.Date;
 
 
 /**
@@ -19,6 +18,7 @@ public class Ocena implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int ocenaid;
 
+	@Temporal(TemporalType.DATE)
 	private Date datum;
 
 	private String opis;

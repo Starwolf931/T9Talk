@@ -25,11 +25,11 @@ public class Kurs implements Serializable {
 	private String opis;
 
 	//bi-directional many-to-one association to Komentar
-	@OneToMany(mappedBy="kur")
+	@OneToMany(mappedBy="kur", fetch=FetchType.EAGER)
 	private List<Komentar> komentars;
 
 	//bi-directional many-to-many association to User
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(
 		name="predaje"
 		, joinColumns={
@@ -42,7 +42,7 @@ public class Kurs implements Serializable {
 	private List<User> users1;
 
 	//bi-directional many-to-many association to User
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(
 		name="prijavljen"
 		, joinColumns={
@@ -55,20 +55,20 @@ public class Kurs implements Serializable {
 	private List<User> users2;
 
 	//bi-directional many-to-one association to Lekcija
-	@OneToMany(mappedBy="kur")
+	@OneToMany(mappedBy="kur", fetch=FetchType.EAGER)
 	private List<Lekcija> lekcijas;
 
-	//bi-directional many-to-many association to User
-	@ManyToMany(mappedBy="kurs3")
-	private List<User> users3;
-
-	//bi-directional many-to-many association to User
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="kurs4")
-	private List<User> users4;
-
 	//bi-directional many-to-one association to Ocena
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="kur")
+	@OneToMany(mappedBy="kur", fetch=FetchType.EAGER)
 	private List<Ocena> ocenas;
+
+	//bi-directional many-to-one association to Test
+	@OneToMany(mappedBy="kur", fetch=FetchType.EAGER)
+	private List<Test> tests;
+
+	//bi-directional many-to-one association to Uradjentest
+	@OneToMany(mappedBy="kur", fetch=FetchType.EAGER)
+	private List<Uradjentest> uradjentests;
 
 	public Kurs() {
 	}
@@ -165,22 +165,6 @@ public class Kurs implements Serializable {
 		return lekcija;
 	}
 
-	public List<User> getUsers3() {
-		return this.users3;
-	}
-
-	public void setUsers3(List<User> users3) {
-		this.users3 = users3;
-	}
-
-	public List<User> getUsers4() {
-		return this.users4;
-	}
-
-	public void setUsers4(List<User> users4) {
-		this.users4 = users4;
-	}
-
 	public List<Ocena> getOcenas() {
 		return this.ocenas;
 	}
@@ -201,6 +185,50 @@ public class Kurs implements Serializable {
 		ocena.setKur(null);
 
 		return ocena;
+	}
+
+	public List<Test> getTests() {
+		return this.tests;
+	}
+
+	public void setTests(List<Test> tests) {
+		this.tests = tests;
+	}
+
+	public Test addTest(Test test) {
+		getTests().add(test);
+		test.setKur(this);
+
+		return test;
+	}
+
+	public Test removeTest(Test test) {
+		getTests().remove(test);
+		test.setKur(null);
+
+		return test;
+	}
+
+	public List<Uradjentest> getUradjentests() {
+		return this.uradjentests;
+	}
+
+	public void setUradjentests(List<Uradjentest> uradjentests) {
+		this.uradjentests = uradjentests;
+	}
+
+	public Uradjentest addUradjentest(Uradjentest uradjentest) {
+		getUradjentests().add(uradjentest);
+		uradjentest.setKur(this);
+
+		return uradjentest;
+	}
+
+	public Uradjentest removeUradjentest(Uradjentest uradjentest) {
+		getUradjentests().remove(uradjentest);
+		uradjentest.setKur(null);
+
+		return uradjentest;
 	}
 
 }
